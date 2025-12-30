@@ -30,7 +30,7 @@ Below is a flowchart illustrating the request processing workflow of the service
 
 1. Clone the repository to your local machine.
 1. Navigate to the root directory of the project.
-1. Optionally run npm install
+1. Run npm install
 1. Run the following command to start all services using Docker Compose:
 
 ```sh
