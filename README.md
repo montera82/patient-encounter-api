@@ -23,8 +23,9 @@ Below is a flowchart illustrating the request processing workflow of the service
 
 ## Prerequisites
 
+- Node.js 20.0.0 or higher is required.
 - Docker installed on your machine.
-  Note: This project is fully containerized, meaning all commands run inside Docker containers.
+  Note: The API service, PostgreSQL database, and Redis cache all run in Docker containers, eliminating environment inconsistencies.
 
 ## Running the Service
 
