@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Provider {
+  id        String   @id @default(uuid())
+  name      String
+  apiKey    String?  @map("api_key")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  encounters Encounter[] @relation("ProviderEncounters")
+
+  @@map("providers")
+}
+
+model Patient {
+  id                  String      @id @default(uuid())
+  medicalRecordNumber String      @unique @map("medical_record_number")
+  dateOfBirth         DateTime    @map("date_of_birth")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+  encounters          Encounter[] @relation("PatientEncounters")
+
+  @@map("patients")
+}
+
+model Encounter {
+  id            String        @id @default(uuid())
+  patientId     String        @map("patient_id")
+  providerId    String        @map("provider_id")
+  encounterDate DateTime      @map("encounter_date")
+  encounterType EncounterType @map("encounter_type")
+  clinicalData  Json          @map("clinical_data")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  createdBy     String        @map("created_by")
+  patient       Patient       @relation("PatientEncounters", fields: [patientId], references: [id], onDelete: Cascade)
+  provider      Provider      @relation("ProviderEncounters", fields: [providerId], references: [id])
+
+  @@index([patientId])
+  @@index([providerId])
+  @@index([encounterDate])
+  @@index([encounterType])
+  @@map("encounters")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid())
+  resourcePath   String   @map("resource_path")
+  method         String
+  ipAddress      String?  @map("ip_address")
+  userAgent      String?  @map("user_agent")
+  requestId      String?  @map("request_id")
+  requestData    Json?    @map("request_data")
+  responseData   Json?    @map("response_data")
+  action         String?
+  resourceType   String?  @map("resource_type")
+  resourceId     String?  @map("resource_id")
+  fieldsAccessed String[] @map("fields_accessed")
+  timestamp      DateTime @default(now())
+  providerId     String   @map("provider_id")
+
+  @@index([providerId])
+  @@index([resourcePath])
+  @@index([timestamp])
+  @@index([method])
+  @@index([action])
+  @@index([resourceType])
+  @@map("audit_logs")
+}
+
+enum EncounterType {
+  INITIAL_ASSESSMENT
+  FOLLOW_UP
+  TREATMENT_SESSION
+}
