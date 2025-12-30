@@ -4,10 +4,10 @@ The Patient Encounter API provides secure HIPAA-compliant endpoints for managing
 
 ### Example Endpoints:
 
-    POST /api/v1/encounters → Create new patient encounter record
-    GET /api/v1/encounters → Retrieve all encounters with filtering options
-    GET /api/v1/encounters/:id → Retrieve specific encounter with audit logging
-    GET /api/v1/audit/encounters → Generate compliance reports and audit trails
+    POST /api/v1/encounters -> Create a new encounter record
+    GET /api/v1/encounters/:id -> Retrieve specific encounter
+    GET /api/v1/encounters -> Retrieve all encounters with filtering options
+    GET /api/v1/audit/encounters -> Audit trail endpoint for compliance
 
 ## Service Workflow Overview
 
@@ -28,7 +28,7 @@ Below is a flowchart illustrating the request processing workflow of the service
 
 ## Running the Service
 
-1. Copy the repository to your local machine.
+1. Clone the repository to your local machine.
 1. Navigate to the root directory of the project.
 1. Optionally run npm install
 1. Run the following command to start all services using Docker Compose:
