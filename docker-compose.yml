@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: patient-encounter-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: patient_encounter_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_password_change_in_production
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - patient-encounter-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: patient-encounter-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - patient-encounter-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  api:
+    image: node:20
+    container_name: patient-encounter-api
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -c "npm ci && npm run start:dev"
+    env_file:
+      - .env.docker
+    environment:
+      # Override database URL to use Docker service name
+      DATABASE_URL: postgresql://postgres:postgres_password_change_in_production@postgres:5432/patient_encounter_db?schema=public
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3000:3000"
+    networks:
+      - patient-encounter-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
+
+networks:
+  patient-encounter-network:
+    driver: bridge
