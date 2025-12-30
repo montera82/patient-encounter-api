@@ -28,21 +28,10 @@ Below is a flowchart illustrating the request processing workflow of the service
 
 ## Running the Service
 
-1. Clone the repository to your local machine.
-1. Navigate to the root directory of the project.
-1. Run npm install
-1. Run the following command to start all services using Docker Compose:
-
-```sh
-   npm run start:docker
-```
-
-Wait for Docker Compose to build and start the services. This process may take a few minutes.
-
-Once the services are up and running, you can test by sending requests to the encounter endpoints.
-
-Which are documented in the exposed swagger interface:
-http://localhost:3000/api/v1/docs
+- Clone this repo
+- Navigate to root and run npm install: `cd patient-encounter-api && npm install`
+- Start the services: `npm run start:docker`
+- Navigate to: http://localhost:3000/api/v1/docs
 
 
 ## How this project is organized
