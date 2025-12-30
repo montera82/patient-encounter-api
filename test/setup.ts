@@ -8,6 +8,7 @@ config({ path: '.env.docker' });
 process.env.NODE_ENV = 'test';
 process.env.LOG_LEVEL = 'error';
 process.env.DATABASE_URL = 'postgresql://postgres:postgres_password_change_in_production@localhost:5432/patient_encounter_test_db?schema=public';
+process.env.REDIS_URL = 'redis://localhost:6379';
 process.env.RATE_LIMIT_LIMIT = '1000';
 process.env.DISABLE_EXTERNAL_LOGGING = 'true';
 
