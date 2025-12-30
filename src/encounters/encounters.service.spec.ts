@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EncountersService } from './encounters.service';
+import { EncounterEntity } from './domain/encounter.entity';
 import { AppError } from '../common/app-error';
 import { AuthenticatedProvider } from '../common/types';
 
@@ -107,7 +108,10 @@ describe('EncountersService', () => {
 
       const result = await service.getEncounterById('encounter-123', mockProvider);
 
-      expect(result).toEqual(mockEncounterData);
+      expect(result).toBeInstanceOf(EncounterEntity);
+      expect(result.id).toBe(mockEncounterData.id);
+      expect(result.patientId).toBe(mockEncounterData.patientId);
+      expect(result.providerId).toBe(mockEncounterData.providerId);
       expect(mockCacheService.get).toHaveBeenCalledWith('encounter-123');
       expect(encounterRepository.findById).not.toHaveBeenCalled();
       expect(logger.log).toHaveBeenCalledWith('Encounter retrieved successfully from cache');
@@ -144,7 +148,13 @@ describe('EncountersService', () => {
 
       const result = await service.getEncounters({}, mockProvider);
 
-      expect(result).toEqual(cachedResult);
+      expect(result.encounters).toHaveLength(1);
+      expect(result.encounters[0]).toBeInstanceOf(EncounterEntity);
+      expect(result.encounters[0].id).toBe(mockEncounterData.id);
+      expect(result.total).toBe(1);
+      expect(result.page).toBe(1);
+      expect(result.limit).toBe(50);
+      expect(result.totalPages).toBe(1);
       expect(mockCacheService.getList).toHaveBeenCalledWith(cacheKey);
       expect(encounterRepository.findMany).not.toHaveBeenCalled();
       expect(logger.log).toHaveBeenCalledWith('Retrieved 1 encounters from cache');
