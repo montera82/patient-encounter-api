@@ -18,7 +18,7 @@ import { RequestIdInterceptor } from './common/logging/request-id.interceptor';
     ConfigModule.forRoot({
       isGlobal: true,
       validate: envValidation,
-      envFilePath: ['.env.local', '.env'],
+      envFilePath: ['.env.docker'],
     }),
     PrismaModule,
     CacheConfigModule,
