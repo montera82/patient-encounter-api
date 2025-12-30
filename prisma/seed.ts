@@ -61,10 +61,7 @@ async function main() {
   });
 
   console.log('Seed completed successfully!');
-  console.log('Created providers:');
-  console.log(`  - ${provider1.name}`);
-  console.log(`  - ${provider2.name}`);
-  console.log('Created patient');
+  console.log('Created 2 providers and 1 patient');
 }
 
 main()
