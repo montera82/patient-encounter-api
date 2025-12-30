@@ -12,7 +12,6 @@ process.env.REDIS_URL = 'redis://localhost:6379';
 process.env.RATE_LIMIT_LIMIT = '1000';
 process.env.DISABLE_EXTERNAL_LOGGING = 'true';
 
-// Setup test database before any tests run
 beforeAll(async () => {
   await setupTestDatabase();
-}, 60000); // 60 second timeout for database setup
+}, 60000);

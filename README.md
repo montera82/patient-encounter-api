@@ -2,8 +2,9 @@
 
 The Patient Encounter API provides secure HIPAA-compliant endpoints for managing patient encounter records in healthcare environments.
 
-### Example Endpoints:
+### Available Endpoints:
 
+    GET /api/v1/docs -> Interactive Swagger API Documentation
     POST /api/v1/encounters -> Create a new encounter record
     GET /api/v1/encounters/:id -> Retrieve specific encounter
     GET /api/v1/encounters -> Retrieve all encounters with filtering options
@@ -33,7 +34,6 @@ Below is a flowchart illustrating the request processing workflow of the service
 - Navigate to root and run npm install: `cd patient-encounter-api && npm install`
 - Start the services: `npm run start:docker`
 - Navigate to: http://localhost:3000/api/v1/docs
-
 
 ## How this project is organized
 
@@ -163,3 +163,7 @@ Note: All sensitive patient information (PHI) is automatically redacted from log
 ### Environmental Variables
 
 The project's environmental variables are stored in a `.env.docker` file in the project root. This file is intended for use during docker container creation. Moreover, it is readily adaptable for integration with Kubernetes, serving as a values file in Helm charts. This ensures that the application can be deployed consistently and reliably across various healthcare environments, from development setups to production HIPAA-compliant clusters, while maintaining the ease of configuration management and regulatory compliance.
+
+---
+
+*For API usage examples and curl commands, see [API Examples](/assets/api-examples.md).*
