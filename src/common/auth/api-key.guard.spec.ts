@@ -3,11 +3,13 @@ import { ExecutionContext } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { ApiKeyGuard } from './api-key.guard';
 import { PrismaService } from '../prisma.service';
+import { CacheService } from '../cache/cache.service';
 import { AppError } from '../app-error';
 
 describe('ApiKeyGuard', () => {
   let guard: ApiKeyGuard;
   let prismaService: PrismaService;
+  let cacheService: CacheService;
 
   const mockRequest = {
     headers: { 'x-api-key': 'test-api-key' },
@@ -34,15 +36,24 @@ describe('ApiKeyGuard', () => {
             },
           },
         },
+        {
+          provide: CacheService,
+          useValue: {
+            getString: jest.fn(),
+            set: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     guard = module.get<ApiKeyGuard>(ApiKeyGuard);
     prismaService = module.get<PrismaService>(PrismaService);
+    cacheService = module.get<CacheService>(CacheService);
   });
 
   it('should allow request with valid API key', async () => {
     const hashedKey = await bcrypt.hash('test-api-key', 10);
+    jest.spyOn(cacheService, 'getString').mockResolvedValue(null);
     jest.spyOn(prismaService.provider, 'findMany').mockResolvedValue([
       { id: 'provider-1', name: 'Test Provider', apiKey: hashedKey } as any,
     ]);

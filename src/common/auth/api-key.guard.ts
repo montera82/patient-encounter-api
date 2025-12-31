@@ -3,12 +3,19 @@ import { Request } from 'express';
 import * as bcrypt from 'bcryptjs';
 
 import { PrismaService } from '../prisma.service';
+import { CacheService } from '../cache/cache.service';
 import { AppError } from '../app-error';
 import { AuthenticatedProvider } from '../types';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly CACHE_KEY = 'auth:providers';
+  private readonly CACHE_TTL = 300; // 5 minutes
+
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cache: CacheService
+  ) {}
 
   canActivate(context: ExecutionContext): Promise<boolean> {
     return this.validateRequest(context);
@@ -46,9 +53,7 @@ export class ApiKeyGuard implements CanActivate {
 
   private async validateApiKey(apiKey: string) {
     try {
-      const providers = await this.prisma.provider.findMany({
-        where: { apiKey: { not: null } },
-      });
+      const providers = await this.getProviders();
 
       for (const provider of providers) {
         if (provider.apiKey && (await bcrypt.compare(apiKey, provider.apiKey))) {
@@ -59,6 +64,21 @@ export class ApiKeyGuard implements CanActivate {
     } catch {
       return null;
     }
+  }
+
+  private async getProviders() {
+    const cached = await this.cache.getString(this.CACHE_KEY);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    const providers = await this.prisma.provider.findMany({
+      where: { apiKey: { not: null } },
+      select: { id: true, name: true, apiKey: true },
+    });
+    
+    await this.cache.set(this.CACHE_KEY, JSON.stringify(providers), this.CACHE_TTL);
+    return providers;
   }
 }
 
