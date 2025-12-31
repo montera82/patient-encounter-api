@@ -1,6 +1,6 @@
 # Patient Encounter API
 
-The Patient Encounter API provides secure HIPAA-compliant endpoints for managing patient encounter records in healthcare environments.
+The Patient Encounter API provides secure endpoints for managing patient encounter records in healthcare environments.
 
 ### Available Endpoints:
 
@@ -18,7 +18,7 @@ Below is a flowchart illustrating the request processing workflow of the service
 
 ### Components
 
-- **Patient Encounter Service** - Processes incoming requests and manages encounter records with HIPAA compliance.
+- **Patient Encounter Service** - Processes incoming requests and manages encounter records.
 - **Redis** - An in-memory cache to speed up data retrieval and reduce dependency on the primary database.
 - **PostgreSQL** - Stores patient encounter data, clinical information, and audit trails persistently.
 
@@ -48,7 +48,7 @@ See a high level overview below of how this project is structured.
 │   ├── common/              # Shared utilities and configurations
 │   │   ├── audit/           # Audit logging interceptors and services
 │   │   ├── auth/            # Authentication guards and decorators
-│   │   ├── logging/         # HIPAA-compliant logging system
+│   │   ├── logging/         # Audit logging system
 │   │   ├── prisma.module.ts # Database connection module
 │   │   └── types.ts         # Shared type definitions
 │   └── encounters/          # Encounter management module
@@ -150,7 +150,7 @@ Ran all test suites.
 
 ### Observability Through Distributed Logging
 
-The service leverages Winston for distributed logging with HIPAA-compliant PHI redaction, ensuring high-level observability while maintaining patient privacy. Once the application is initiated, one can effortlessly monitor and analyze the logs in real-time. This is achieved through the following command: `docker-compose logs -f patient-encounter-api`, you'll be greeted with a similar log message below for a successful encounter creation for example.
+The service leverages Winston for distributed logging with PHI redaction, ensuring high-level observability while maintaining patient privacy. Once the application is initiated, one can effortlessly monitor and analyze the logs in real-time. This is achieved through the following command: `docker-compose logs -f patient-encounter-api`, you'll be greeted with a similar log message below for a successful encounter creation for example.
 
 ```sh
 patient-encounter-api  | info: Creating new encounter {"clinicalData":"[REDACTED - PHI]","encounterType":"TREATMENT_SESSION","patientId":"[REDACTED - PHI]","requestId":"3854da50-5df4-40d1-b261-c678f6ab56e2"}
@@ -158,11 +158,11 @@ patient-encounter-api  | info: Request completed successfully {"duration":2,"ope
 patient-encounter-api  | info: Retrieved 2 encounters {"requestId":"76a38672-7d6e-4e95-8740-7c7c371cc879"}
 ```
 
-Note: All sensitive patient information (PHI) is automatically redacted from logs to maintain HIPAA compliance while preserving operational visibility.
+Note: All sensitive patient information (PHI) is automatically redacted from logs to maintain compliance while preserving operational visibility.
 
 ### Environmental Variables
 
-The project's environmental variables are stored in a `.env.docker` file in the project root. This file is intended for use during docker container creation. Moreover, it is readily adaptable for integration with Kubernetes, serving as a values file in Helm charts. This ensures that the application can be deployed consistently and reliably across various healthcare environments, from development setups to production HIPAA-compliant clusters, while maintaining the ease of configuration management and regulatory compliance.
+The project's environmental variables are stored in a `.env.docker` file in the project root. This file is intended for use during docker container creation. Moreover, it is readily adaptable for integration with Kubernetes, serving as a values file in Helm charts. This ensures that the application can be deployed consistently and reliably across various healthcare environments, from development setups to production clusters, while maintaining the ease of configuration management and regulatory compliance.
 
 ---
 
