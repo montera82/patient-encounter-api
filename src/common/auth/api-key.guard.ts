@@ -1,9 +1,10 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, createParamDecorator } from '@nestjs/common';
 import { Request } from 'express';
 import * as bcrypt from 'bcryptjs';
 
 import { PrismaService } from '../prisma.service';
 import { AppError } from '../app-error';
+import { AuthenticatedProvider } from '../types';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
@@ -60,3 +61,10 @@ export class ApiKeyGuard implements CanActivate {
     }
   }
 }
+
+export const CurrentProvider = createParamDecorator(
+  (data: keyof AuthenticatedProvider | undefined, ctx: ExecutionContext): AuthenticatedProvider | any => {
+    const request = ctx.switchToHttp().getRequest();
+    return data ? request.provider?.[data] : request.provider;
+  }
+);

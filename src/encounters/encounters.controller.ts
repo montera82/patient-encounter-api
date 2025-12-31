@@ -2,7 +2,7 @@ import { Controller, Post, Get, Body, Param, Query, HttpCode, HttpStatus, UseInt
 import { ApiTags, ApiOperation, ApiResponse, ApiSecurity, ApiParam, ApiQuery, ApiHeader } from '@nestjs/swagger';
 
 import { EncountersService } from './encounters.service';
-import { CurrentProvider } from '../common/auth/current-user.decorator';
+import { CurrentProvider } from '../common/auth/api-key.guard';
 import { AuthenticatedProvider } from '../common/types';
 import { createZodPipe } from '../common/zod.pipe';
 import { LoggerService } from '../common/logging/logger.service';
