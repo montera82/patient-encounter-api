@@ -83,7 +83,7 @@ export class EncountersController {
     }
 
     this.logger.info('Creating new encounter', {
-      ...createEncounterDto,
+      encounterType: createEncounterDto.encounterType,
     });
 
     const encounter = await this.encountersService.createEncounter(
