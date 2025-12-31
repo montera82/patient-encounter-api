@@ -46,6 +46,17 @@ export class EncounterRepository {
     }
   }
 
+  async findPatientById(patientId: string): Promise<boolean> {
+    try {
+      const patient = await this.prisma.patient.findUnique({
+        where: { id: patientId },
+      });
+      return !!patient;
+    } catch (error) {
+      return false;
+    }
+  }
+
   async findMany(filters: {
     patientId?: string;
     providerId?: string;

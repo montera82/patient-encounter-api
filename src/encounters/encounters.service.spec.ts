@@ -8,6 +8,7 @@ const mockEncounterRepository = {
   create: jest.fn(),
   findById: jest.fn(),
   findMany: jest.fn(),
+  findPatientById: jest.fn(),
 };
 
 const mockLogger = {
@@ -61,6 +62,7 @@ describe('EncountersService', () => {
     };
 
     it('should create encounter successfully', async () => {
+      encounterRepository.findPatientById.mockResolvedValue(true);
       encounterRepository.create.mockResolvedValue(mockEncounterData);
 
       const result = await service.createEncounter(createDto, mockProvider);
@@ -74,6 +76,7 @@ describe('EncountersService', () => {
     });
 
     it('should throw error for future encounter date', async () => {
+      encounterRepository.findPatientById.mockResolvedValue(true);
       const futureDate = new Date();
       futureDate.setDate(futureDate.getDate() + 1);
 

@@ -102,7 +102,7 @@ export class EncountersService {
       ...filters,
       startDate: filters.startDate ? new Date(filters.startDate) : undefined,
       endDate: filters.endDate ? new Date(filters.endDate) : undefined,
-      providerId: filters.providerId || provider.id,
+      providerId: provider.id,
     };
 
     if (parsedFilters.startDate && parsedFilters.endDate) {
@@ -163,6 +163,14 @@ export class EncountersService {
       );
     }
 
+    // Validate patient exists
+    const patient = await this.encounterRepository.findPatientById(createEncounterDto.patientId);
+    if (!patient) {
+      throw AppError.badRequest(
+        'Patient not found',
+        `Patient with ID ${createEncounterDto.patientId} does not exist`
+      );
+    }
   }
 
   private async validateEncounterAccess(
