@@ -219,7 +219,7 @@ export class AuditInterceptor implements NestInterceptor {
       }
     } catch (error) {
       // Log the error for debugging but continue
-      console.warn('Failed to extract fields from response:', error);
+      this.logger.warn('Failed to extract fields from response');
     }
     
     return [];
