@@ -74,7 +74,7 @@ async function bootstrap() {
     if (configService.get('NODE_ENV') !== 'production') {
       const config = new DocumentBuilder()
         .setTitle('Patient Encounter API')
-        .setDescription('HIPAA-compliant patient encounter management system for JiminiHealth')
+        .setDescription('HIPAA-compliant patient encounter management')
         .setVersion('1.0')
         .addTag('encounters', 'Patient encounter management')
         .addTag('audit', 'Audit trail and compliance')
