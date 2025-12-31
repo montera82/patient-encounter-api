@@ -148,6 +148,14 @@ Ran all test suites.
 - **Audit System**: Complete audit trail of all data access and modifications for regulatory compliance and security monitoring.
 
 
+### Authentication & Identity Model
+
+This service uses API key–based authentication via the `x-api-key` request header. API keys are hashed before storage and validated by a centralized AuthGuard which attaches an identity to incoming requests as:
+
+req.user = { id: string, role: string }
+
+That identity is propagated through the request lifecycle and recorded on audit log entries so every access or modification is attributable to a specific actor.
+
 ### Observability Through Distributed Logging
 
 The service leverages Winston for distributed logging with PHI redaction, ensuring high-level observability while maintaining patient privacy. Once the application is initiated, one can effortlessly monitor and analyze the logs in real-time. This is achieved through the following command: `docker-compose logs -f patient-encounter-api`, you'll be greeted with a similar log message below for a successful encounter creation for example.
