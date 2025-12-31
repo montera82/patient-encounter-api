@@ -12,7 +12,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "start": "node dist/main",
     "start:dev": "nest start --watch",
-    "start:docker": "docker compose up -d --build && sleep 10 && docker compose exec api npx prisma migrate deploy && docker compose exec api npx prisma db seed",
+    "start:docker": "docker compose up -d --build && sleep 10 && docker compose exec api npm exec prisma migrate deploy && docker compose exec api npm exec prisma db seed",
     "test": "jest --detectOpenHandles",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:e2e:setup": "docker compose up -d postgres redis && sleep 5 && npm run test:e2e",
