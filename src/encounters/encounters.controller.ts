@@ -109,12 +109,6 @@ export class EncountersController {
     type: 'string',
   })
   @ApiQuery({
-    name: 'providerId',
-    required: false,
-    description: 'Filter by provider ID (defaults to authenticated provider)',
-    type: 'string',
-  })
-  @ApiQuery({
     name: 'startDate',
     required: false,
     description: 'Filter encounters from this date (ISO format)',
@@ -186,7 +180,6 @@ export class EncountersController {
   async getEncounters(
     @CurrentProvider() provider: AuthenticatedProvider,
     @Query('patientId') patientId?: string,
-    @Query('providerId') providerId?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('encounterType') encounterType?: string,
@@ -195,7 +188,6 @@ export class EncountersController {
   ) {
     const filters = {
       patientId,
-      providerId,
       startDate,
       endDate,
       encounterType,

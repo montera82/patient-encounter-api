@@ -89,7 +89,6 @@ export class EncountersService {
   async getEncounters(
     filters: {
       patientId?: string;
-      providerId?: string;
       startDate?: string;
       endDate?: string;
       encounterType?: string;

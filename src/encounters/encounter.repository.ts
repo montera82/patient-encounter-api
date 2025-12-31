@@ -59,7 +59,7 @@ export class EncounterRepository {
 
   async findMany(filters: {
     patientId?: string;
-    providerId?: string;
+    providerId: string;
     startDate?: Date;
     endDate?: Date;
     encounterType?: string;
@@ -82,14 +82,12 @@ export class EncounterRepository {
 
       const where: Record<string, unknown> & {
         encounterDate?: { gte?: Date; lte?: Date };
-      } = {};
+      } = {
+        providerId, // Always filter by authenticated provider
+      };
 
       if (patientId) {
         where.patientId = patientId;
-      }
-
-      if (providerId) {
-        where.providerId = providerId;
       }
 
       if (encounterType) {

@@ -33,7 +33,7 @@ export class CacheService {
 
   generateKey(filters: {
     patientId?: string;
-    providerId?: string;
+    providerId: string;
     startDate?: string;
     endDate?: string;
     encounterType?: string;
